@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>1Single Bid Page</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+            background-color: #f8f9fa;
+        }
+
+        .navbar {
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+
+        .content {
+            flex: 1;
+            text-align: center;
+            padding: 20px;
+        }
+
+        .item-details {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            margin-top: 20px;
+        }
+
+        .item-details h2 {
+            font-size: 2rem;
+            font-weight: 600;
+            color: #333;
+        }
+
+        .item-details h3 {
+            font-size: 1.5rem;
+            color: #28a745;
+            font-weight: 500;
+        }
+
+        .img-fluid {
+            border-radius: 10px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            margin-bottom: 20px;
+        }
+
+        .specifications {
+            margin-top: 20px;
+            text-align: left;
+            max-width: 400px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        .specifications h4 {
+            font-size: 1.25rem;
+            font-weight: 500;
+            color: #333;
+            margin-bottom: 10px;
+        }
+
+        .specifications ul {
+            padding-left: 1.5rem;
+        }
+
+        .specifications li {
+            font-size: 1rem;
+            color: #555;
+        }
+
+        .btn-primary {
+            padding: 12px 30px;
+            font-size: 1rem;
+            font-weight: 600;
+            border-radius: 50px;
+            transition: all 0.3s ease;
+        }
+
+        .btn-primary:hover {
+            background-color: #0069d9;
+            border-color: #0062cc;
+        }
+
+        footer {
+            background-color: #343a40;
+            color: #fff;
+            padding: 15px;
+        }
+    </style>
+</head>
+<body>
+    <nav class="navbar navbar-light bg-light">
+        <div class="container text-center">
+            <span class="navbar-brand mb-0 h1 w-100">Single Bid Page</span>
+        </div>
+    </nav>
+    
+    <div class="container mt-4 content">
+        <img src="download.jpeg" class="img-fluid" alt="Item Image" style="width: 300px; height: 300px;">
+        
+        <div class="item-details">
+            <h2>Item Title</h2>
+            <h3>$Price</h3>
+        </div>
+        
+        <div class="specifications">
+            <h4>Item Specifications</h4>
+            <ul>
+                <li>Specification 1</li>
+                <li>Specification 2</li>
+                <li>Specification 3</li>
+            </ul>
+        </div>
+        
+        <div class="mt-4">
+            <button class="btn btn-primary">Place Bid</button>
+        </div>
+    </div>
+    
+    <footer class="text-center mt-auto py-3">
+        &copy; 2025 Project 2
+    </footer>
+    
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>
