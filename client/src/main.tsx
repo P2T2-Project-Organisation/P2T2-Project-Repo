@@ -4,9 +4,14 @@ import './index.css';
 
 import App from './App.tsx';
 
-import ErrorPage from './pages/ErrorPage.tsx';
-import Home from './pages/Home.tsx';
-import Login from './pages/Login.tsx';
+import AccountPage from './pages/AccountPage';
+// import Header from './pages/Header';
+import Home from './pages/Home';
+import ProductViewer from './pages/ProductViewer';
+import Purchases from './pages/Purchases';
+import Wishlist from './pages/Wishlist';
+import ErrorPage from './pages/ErrorPage';
+
 
 const router = createBrowserRouter([
   {
@@ -19,9 +24,26 @@ const router = createBrowserRouter([
         element: <Home />
       }, 
       {
-        path: '/login',
-        element: <Login />
+        path: '/Home',
+        element: <Home />
       }, 
+      {
+        path: '/AccountPage',
+        element: <AccountPage />
+      }, 
+      {
+        path: '/ProductViewer',
+        element: <ProductViewer />
+      }, 
+      {
+        path: '/Purchases',
+        element: <Purchases />
+      }, 
+      {
+        path: '/Wishlist',
+        element: <Wishlist />
+      }, 
+      
     ]
   }
 ])

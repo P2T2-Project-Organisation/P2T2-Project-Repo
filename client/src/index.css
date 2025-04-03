@@ -1706,3 +1706,89 @@ form [type='radio'] {
     align-content: center;
   }
 }
+
+body {
+  font-family: Arial, sans-serif;
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+  background-color: #f8f9fa;
+}
+
+.navbar {
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.content {
+  flex: 1;
+  text-align: center;
+  padding: 20px;
+}
+
+.item-details {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-top: 20px;
+}
+
+.item-details h2 {
+  font-size: 2rem;
+  font-weight: 600;
+  color: #333;
+}
+
+.item-details h3 {
+  font-size: 1.5rem;
+  color: #28a745;
+  font-weight: 500;
+}
+
+.img-fluid {
+  border-radius: 10px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  margin-bottom: 20px;
+}
+
+.specifications {
+  margin-top: 20px;
+  text-align: left;
+  max-width: 400px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.specifications h4 {
+  font-size: 1.25rem;
+  font-weight: 500;
+  color: #333;
+  margin-bottom: 10px;
+}
+
+.specifications ul {
+  padding-left: 1.5rem;
+}
+
+.specifications li {
+  font-size: 1rem;
+  color: #555;
+}
+
+.btn-primary {
+  padding: 12px 30px;
+  font-size: 1rem;
+  font-weight: 600;
+  border-radius: 50px;
+  transition: all 0.3s ease;
+}
+
+.btn-primary:hover {
+  background-color: #0069d9;
+  border-color: #0062cc;
+}
+
+footer {
+  background-color: #343a40;
+  color: #fff;
+  padding: 15px;
+}

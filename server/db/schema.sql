@@ -1,4 +1,4 @@
--- Active: 1742858180717@@127.0.0.1@5432@friends_db
+-- Active: 1742859656043@@127.0.0.1@5432@postgres
 -- DROP DATABASE
 DROP DATABASE IF EXISTS friends_db;
 
