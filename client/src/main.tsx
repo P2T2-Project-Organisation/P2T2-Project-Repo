@@ -11,6 +11,7 @@ import ProductViewer from './pages/ProductViewer';
 import Purchases from './pages/Purchases';
 import Wishlist from './pages/Wishlist';
 import ErrorPage from './pages/ErrorPage';
+import Login from './pages/Login.tsx';
 
 
 const router = createBrowserRouter([
@@ -43,7 +44,10 @@ const router = createBrowserRouter([
         path: '/Wishlist',
         element: <Wishlist />
       }, 
-      
+      {
+        path: '/Login',
+        element: <Login />
+      }, 
     ]
   }
 ])
