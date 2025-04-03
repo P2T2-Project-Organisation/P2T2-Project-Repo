@@ -5,9 +5,9 @@ export default function Purchases(){
     <div className="row">
         <div className="col-md-3">
             <div className="list-group">
-                <a href="myaccount.html" className="list-group-item list-group-item-action">My Account</a>
-                <a href="wishlist.html" className="list-group-item list-group-item-action">Wishlist</a>
-                <a href="purchases.html" className="list-group-item list-group-item-action active">Purchases</a>
+                <a href="AccountPage" className="list-group-item list-group-item-action">My Account</a>
+                <a href="Wishlist" className="list-group-item list-group-item-action">Wishlist</a>
+                <a href="Purchases" className="list-group-item list-group-item-action active">Purchases</a>
             </div>
         </div>
             <div className="col-md-9 bg-light p-4">
