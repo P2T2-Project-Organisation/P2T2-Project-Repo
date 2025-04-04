@@ -1,3 +1,5 @@
+import ArtworkViewer from "../components/artworkViewer";
+
 const ProductViewer = () => {
     return (
         <section>
@@ -28,14 +30,8 @@ const ProductViewer = () => {
             <button className="btn btn-primary">Place Bid</button>
         </div>
     </div>
-    <a id="artwork-url">
-      <div id="artwork-container"></div>
-      <img id="artwork-save-overlay" />
-    </a>
-    <a id="tombstone">
-      <div id="title"></div>
-      <div id="artist"></div>
-    </a>
+    
+    <ArtworkViewer artworkId={129884}/>
     
     <footer className="text-center mt-auto py-3">
         &copy; 2025 Project 2
