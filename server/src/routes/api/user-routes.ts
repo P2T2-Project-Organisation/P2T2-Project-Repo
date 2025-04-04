@@ -1,14 +1,38 @@
 import express from 'express';
 import type { Request, Response } from 'express';
 import { User } from '../../models/index.js';
+import { authenticateToken } from '../../middleware/auth.js'; // Adjust the path if necessary
 
 const router = express.Router();
+
+router.get('/me', authenticateToken, async (req: Request, res: Response) => {
+  try {
+    const { username } = req.user as { username: string };
+
+    if (!username) {
+      return res.status(400).json({ message: 'Invalid user data' });
+    }
+
+    const user = await User.findOne({
+      where: { username },
+      attributes: { exclude: ['password'] },
+    });
+
+    if (!user) {
+      return res.status(404).json({ message: 'User not found' });
+    }
+
+    return res.json(user);
+  } catch (error: any) {
+    return res.status(500).json({ message: error.message });
+  }
+});
 
 // GET /users - Get all users
 router.get('/', async (_req: Request, res: Response) => {
   try {
     const users = await User.findAll({
-      attributes: { exclude: ['password'] }
+      attributes: { exclude: ['password'] },
     });
     res.json(users);
   } catch (error: any) {
@@ -16,12 +40,12 @@ router.get('/', async (_req: Request, res: Response) => {
   }
 });
 
-// GET /users/:id - Get a user by id
+// GET /users/:id - Get a user by ID
 router.get('/:id', async (req: Request, res: Response) => {
   const { id } = req.params;
   try {
     const user = await User.findByPk(id, {
-      attributes: { exclude: ['password'] }
+      attributes: { exclude: ['password'] },
     });
     if (user) {
       res.json(user);
@@ -44,7 +68,7 @@ router.post('/', async (req: Request, res: Response) => {
   }
 });
 
-// PUT /users/:id - Update a user by id
+// PUT /users/:id - Update a user by ID
 router.put('/:id', async (req: Request, res: Response) => {
   const { id } = req.params;
   const { username, password } = req.body;
@@ -63,7 +87,7 @@ router.put('/:id', async (req: Request, res: Response) => {
   }
 });
 
-// DELETE /users/:id - Delete a user by id
+// DELETE /users/:id - Delete a user by ID
 router.delete('/:id', async (req: Request, res: Response) => {
   const { id } = req.params;
   try {

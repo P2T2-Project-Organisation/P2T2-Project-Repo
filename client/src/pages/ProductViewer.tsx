@@ -28,6 +28,14 @@ const ProductViewer = () => {
             <button className="btn btn-primary">Place Bid</button>
         </div>
     </div>
+    <a id="artwork-url">
+      <div id="artwork-container"></div>
+      <img id="artwork-save-overlay" />
+    </a>
+    <a id="tombstone">
+      <div id="title"></div>
+      <div id="artist"></div>
+    </a>
     
     <footer className="text-center mt-auto py-3">
         &copy; 2025 Project 2
