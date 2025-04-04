@@ -2,25 +2,6 @@ import express from 'express';
 import { User } from '../../models/index.js';
 import { authenticateToken } from '../../middleware/auth.js'; // Adjust the path if necessary
 const router = express.Router();
-router.get('/me', authenticateToken, async (req, res) => {
-    try {
-        const { username } = req.user;
-        if (!username) {
-            return res.status(400).json({ message: 'Invalid user data' });
-        }
-        const user = await User.findOne({
-            where: { username },
-            attributes: ['username', 'createdAt'], // Include only the required fields
-        });
-        if (!user) {
-            return res.status(404).json({ message: 'User not found' });
-        }
-        return res.json(user); // Return the user data
-    }
-    catch (error) {
-        return res.status(500).json({ message: error.message });
-    }
-});
 // GET /users - Get all users
 router.get('/', async (_req, res) => {
     try {
