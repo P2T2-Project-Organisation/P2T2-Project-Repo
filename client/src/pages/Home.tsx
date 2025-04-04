@@ -1,59 +1,47 @@
-import { useState, useEffect, useLayoutEffect } from "react";
-import { retrieveUsers } from "../api/userAPI";
-import type { UserData } from "../interfaces/UserData";
-import ErrorPage from "./ErrorPage";
-import UserList from '../components/Users';
-import auth from '../utils/auth';
+import { useState } from "react";
 
 const Home = () => {
-
-    const [users, setUsers] = useState<UserData[]>([]);
-    const [error, setError] = useState(false);
-    const [loginCheck, setLoginCheck] = useState(false);
-
-    useEffect(() => {
-        if (loginCheck) {
-            fetchUsers();
-        }
-    }, [loginCheck]);
-
-    useLayoutEffect(() => {
-        checkLogin();
-    }, []);
-
-    const checkLogin = () => {
-        if (auth.loggedIn()) {
-            setLoginCheck(true);
-        }
-    };
-
-    const fetchUsers = async () => {
-        try {
-            const data = await retrieveUsers();
-            setUsers(data)
-        } catch (err) {
-            console.error('Failed to retrieve tickets:', err);
-            setError(true);
-        }
-    }
-
-    if (error) {
-        return <ErrorPage />;
-    }
+    const [currentPage, setCurrentPage] = useState("Categories");
 
     return (
-        <>
-            {
-                !loginCheck ? (
-                    <div className='login-notice'>
-                        <h1>
-                            Login to view all your friends!
-                        </h1>
-                    </div>
-                ) : (
-                    <UserList users={users} />
-                )}
-        </>
+        <section>
+            <div className="container mt-4 text-center content">
+                <h2>Home</h2>
+                <div className="d-flex justify-content-center gap-3 mt-3">
+                    <a
+                        href="#"
+                        className={`btn ${currentPage === "Categories" ? "btn-primary" : "btn-secondary"}`}
+                        onClick={() => setCurrentPage("Categories")}
+                    >
+                        Categories
+                    </a>
+                    <a
+                        href="#"
+                        className={`btn ${currentPage === "Recently Viewed" ? "btn-primary" : "btn-secondary"}`}
+                        onClick={() => setCurrentPage("Recently Viewed")}
+                    >
+                        Recently Viewed
+                    </a>
+                    <a
+                        href="#"
+                        className={`btn ${currentPage === "Trending" ? "btn-primary" : "btn-success"}`}
+                        onClick={() => setCurrentPage("Trending")}
+                    >
+                        Trending
+                    </a>
+                    <a
+                        href="#"
+                        className={`btn ${currentPage === "History" ? "btn-primary" : "btn-secondary"}`}
+                        onClick={() => setCurrentPage("History")}
+                    >
+                        History
+                    </a>
+                </div>
+            </div>
+            <footer className="text-center mt-auto py-3 bg-light">
+                &copy; 2025 Project 2
+            </footer>
+        </section>
     );
 };
 
