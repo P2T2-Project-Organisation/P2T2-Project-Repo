@@ -15,14 +15,14 @@ router.get('/me', authenticateToken, async (req: Request, res: Response) => {
 
     const user = await User.findOne({
       where: { username },
-      attributes: { exclude: ['password'] },
+      attributes: ['username', 'createdAt'], // Include only the required fields
     });
 
     if (!user) {
       return res.status(404).json({ message: 'User not found' });
     }
 
-    return res.json(user);
+    return res.json(user); // Return the user data
   } catch (error: any) {
     return res.status(500).json({ message: error.message });
   }

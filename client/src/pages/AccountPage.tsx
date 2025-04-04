@@ -6,9 +6,9 @@ const AccountPage = () => {
     useEffect(() => {
         const fetchUserData = async () => {
             try {
-                const response = await fetch('/users/me', {
+                const response = await fetch('/api/users/me', {
                     headers: {
-                        Authorization: `Bearer ${localStorage.getItem('token')}`,
+                        Authorization: `Bearer ${localStorage.getItem('id_token')}`,
                     },
                 });
 
