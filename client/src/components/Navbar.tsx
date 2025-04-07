@@ -119,7 +119,7 @@ const Navbar = () => {
           )}
           {loggedIn && (
             <div className="logged-in-info" style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
-              <span style={{ fontSize: '16px', color: 'black' }}>
+              <span style={{ fontSize: '16px' }}>
                 Welcome back, {username || 'User'}!
               </span>
               <button

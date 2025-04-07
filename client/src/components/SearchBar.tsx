@@ -21,7 +21,7 @@ const SearchBar: React.FC<SearchBarProps> = ({
         style={{
           marginTop: "0",
           padding: "10px 0",
-          backgroundColor: "#f8f9fa",
+          backgroundColor: "var(--background-color)",
         }}
       >
         <div

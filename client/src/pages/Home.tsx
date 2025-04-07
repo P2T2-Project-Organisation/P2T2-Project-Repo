@@ -2,7 +2,7 @@ import { useState, useEffect } from "react";
 import logo from "../assets/logo.png";
 import CategoryButtons from "../components/CategoryButtons";
 import SearchBar from "../components/SearchBar";
-import ArtInterface from "../components/ArtInterface";
+import ArtInterface from "../interfaces/ArtInterface";
 
 interface Artwork {
   id: number;
@@ -220,7 +220,7 @@ const Home = () => {
       case "Explore":
         return (
           <>
-            <div className="text-center mb-3">
+            <div className="text-center mb-3" style={{ backgroundColor: 'var(--background-color)' }}>
               <img
                 src={logo}
                 alt="Logo"

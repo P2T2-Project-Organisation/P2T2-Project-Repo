@@ -1815,31 +1815,33 @@ footer {
 
 /* Custom styles for the sidebar */
 .list-group {
-  border: none; /* Remove the border around the sidebar */
+  border: var(--sidebar-border);
   border-radius: 5px;
   overflow: hidden;
-  width: 250px; /* Set a fixed width for the sidebar */
-  height: calc(100vh - 120px); /* Adjust the height to account for the larger logo and header */
+  width: auto; /* Adjust width to fit content */
+  display: inline-block; /* Wrap around content */
+  background-color: var(--sidebar-background);
+  padding: 0; /* Remove extra padding */
   position: fixed; /* Fix the sidebar to the left */
-  top: 120px; /* Push the sidebar below the larger logo (logo height + padding) */
-  left: 0;
-  background-color: #f8f9fa; /* Light background color */
-  padding-top: 20px; /* Add some padding at the top */
+  top: 120px; /* Adjust the height to account for the header */
+  left: 0; /* Stick to the very left side of the screen */
+  z-index: 1000; /* Ensure it stays above other elements */
 }
 
+/* Ensure the border wraps tightly around the menu items */
 .list-group-item {
-    cursor: pointer;
-    padding: 10px 15px;
-    text-align: left;
-    padding: 15px 20px;
-    text-align: left;
-    border: none; /* Remove borders between items */
+  cursor: pointer;
+  padding: 10px 15px;
+  text-align: left;
+  border: none; /* Remove borders between items */
+  width: 100%; /* Ensure the button spans the full width of the container */
+  box-sizing: border-box; /* Include padding and border in the element's width */
 }
 
 .list-group-item.active {
-    background-color: #007bff;
-    color: white;
-    font-weight: bold;
+  background-color: var(--sidebar-active);
+  color: white;
+  font-weight: bold;
 }
 
 /* Header styles */
@@ -1859,11 +1861,13 @@ footer {
 
 /* Logo container */
 .logo-container {
-  position: relative; /* Keep relative positioning for better placement */
-  margin: 0; /* Remove all margins */
-  padding: 0; /* Remove all padding */
-  text-align: center; /* Center the logo horizontally */
-  top: 0; /* Align the logo directly below the navbar */
+  position: relative;
+  margin: 0;
+  padding: 0;
+  text-align: center;
+  top: 0;
+  background-color: var(--navbar-background); /* Change to use navbar background */
+  transition: background-color 0.3s ease;
 }
 
 /* Logo styles */
@@ -1938,4 +1942,109 @@ footer {
 .fade-out {
   opacity: 0;
   transition: opacity 0.3s ease-out;
+}
+
+/* Theme Variables */
+:root {
+  --background-color: #f8f9fa;
+  --text-color: #1a1a1a;
+  --card-background: #ffffff;
+  --card-border: #dee2e6;
+  --navbar-background: #f8f9fa;
+  --navbar-text: #1a1a1a;
+  --sidebar-background: #f8f9fa;
+  --sidebar-text: #1a1a1a;
+  --sidebar-hover: #e9ecef;
+  --sidebar-active: #007bff;
+  --button-border: #dee2e6;
+  --welcome-text: #1a1a1a;
+  --sidebar-border: 1px solid #dee2e6;
+}
+
+[data-theme='dark'] {
+  --background-color: #1a1a1a;
+  --text-color: #f8f9fa;
+  --card-background: #333333;
+  --card-border: #444444;
+  --navbar-background: #2d2d2d;
+  --navbar-text: #ffffff;
+  --sidebar-background: #2d2d2d;
+  --sidebar-text: #ffffff;
+  --sidebar-hover: #404040;
+  --sidebar-active: #0056b3;
+  --button-border: #404040;
+  --welcome-text: #ffffff;
+  --sidebar-border: none;
+}
+
+body {
+  background-color: var(--background-color);
+  color: var(--text-color);
+  transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+.card {
+  background-color: var(--card-background);
+  border-color: var(--card-border);
+}
+
+.card-title, .card-text {
+  color: var(--text-color);
+}
+
+/* Header styles */
+.header {
+  background-color: var(--navbar-background);
+  color: var(--navbar-text);
+  transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+/* Navbar styles */
+.nav-link {
+  color: var(--navbar-text);
+}
+
+.nav-link:hover {
+  background-color: var(--sidebar-hover);
+  color: var(--navbar-text);
+}
+
+/* Sidebar styles */
+.list-group {
+  background-color: var(--sidebar-background);
+  color: var(--sidebar-text);
+  transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+.list-group-item {
+  background-color: var(--sidebar-background);
+  color: var(--sidebar-text);
+  border-color: var(--button-border);
+}
+
+.list-group-item:hover {
+  background-color: var(--sidebar-hover);
+  color: var(--sidebar-text);
+}
+
+.list-group-item.active {
+  background-color: var(--sidebar-active);
+  color: white;
+}
+
+/* Card styles update */
+.card {
+  background-color: var(--card-background);
+  border-color: var(--card-border);
+  color: var(--text-color);
+}
+
+.card-title, .card-text, .card-body {
+  color: var(--text-color);
+}
+
+/* Update navbar styles */
+.logged-in-info span {
+  color: var(--welcome-text);
+  transition: color 0.3s ease;
 }
