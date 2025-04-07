@@ -7,6 +7,10 @@ export class User extends Model {
         const saltRounds = 10;
         this.password = await bcrypt.hash(password, saltRounds);
     }
+    // Add a method to validate passwords
+    async validatePassword(password) {
+        return bcrypt.compare(password, this.password);
+    }
 }
 // Define the UserFactory function to initialize the User model
 export function UserFactory(sequelize) {
@@ -23,6 +27,7 @@ export function UserFactory(sequelize) {
         email: {
             type: DataTypes.STRING,
             allowNull: false,
+            unique: true, // Ensure email is unique
         },
         password: {
             type: DataTypes.STRING,
@@ -32,14 +37,16 @@ export function UserFactory(sequelize) {
         tableName: 'users', // Name of the table in PostgreSQL
         sequelize, // The Sequelize instance that connects to PostgreSQL
         hooks: {
-            // Before creating a new user, hash and set the password
             beforeCreate: async (user) => {
-                await user.setPassword(user.password);
+                if (!user.password.startsWith('$2b$')) { // Only hash if not already hashed
+                    console.log('Hashing password before creating user:', user.username);
+                    user.password = await bcrypt.hash(user.password, 10);
+                }
             },
-            // Before updating a user, hash and set the new password if it has changed
             beforeUpdate: async (user) => {
-                if (user.changed('password')) {
-                    await user.setPassword(user.password);
+                if (user.changed('password') && !user.password.startsWith('$2b$')) {
+                    console.log('Hashing password before updating user:', user.username);
+                    user.password = await bcrypt.hash(user.password, 10);
                 }
             },
         }

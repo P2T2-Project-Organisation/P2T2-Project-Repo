@@ -1012,12 +1012,21 @@ a:hover {
 }
 
 .btn.btn-primary {
-  background-color: #2d3e50;
-  color: #d9e9e8;
+  display: flex; /* Use flexbox for alignment */
+  align-items: center; /* Vertically align text in the middle */
+  justify-content: center; /* Horizontally center text */
+  padding: 12px 30px;
+  font-size: 1rem;
+  font-weight: 600;
+  border-radius: 50px;
+  background-color: purple; /* Set default color to purple */
+  color: white;
+  transition: all 0.3s ease;
 }
 
 .btn.btn-primary:hover {
-  background-color: #57779a;
+  background-color: green; /* Change color to green on hover */
+  border-color: green;
 }
 
 .btn.btn-danger {
@@ -1174,6 +1183,8 @@ form [type='radio'] {
   margin-right: auto;
   display: flex;
   flex-direction: row;
+  margin-top: 60px; /* Further reduce the space below the navbar */
+  padding: 20px;
 }
 
 .container.container-fluid {
@@ -1779,16 +1790,21 @@ body {
 }
 
 .btn-primary {
+  display: flex; /* Use flexbox for alignment */
+  align-items: center; /* Vertically align text in the middle */
+  justify-content: center; /* Horizontally center text */
   padding: 12px 30px;
   font-size: 1rem;
   font-weight: 600;
   border-radius: 50px;
+  background-color: purple; /* Set default color to purple */
+  color: white;
   transition: all 0.3s ease;
 }
 
 .btn-primary:hover {
-  background-color: #0069d9;
-  border-color: #0062cc;
+  background-color: green; /* Change color to green on hover */
+  border-color: green;
 }
 
 footer {
@@ -1831,7 +1847,7 @@ footer {
   display: flex;
   align-items: center;
   justify-content: space-between; /* Space between logo and navbar */
-  padding: 10px 20px;
+  padding: 0 20px; /* Remove vertical padding */
   background-color: #f8f9fa; /* Light background color */
   position: fixed; /* Fix the header at the top */
   top: 0;
@@ -1843,14 +1859,16 @@ footer {
 
 /* Logo container */
 .logo-container {
-  position: absolute; /* Keep the logo fixed in the top-left corner */
-  top: 10px; /* Adjust spacing from the top */
-  left: 20px; /* Adjust spacing from the left */
+  position: relative; /* Keep relative positioning for better placement */
+  margin: 0; /* Remove all margins */
+  padding: 0; /* Remove all padding */
+  text-align: center; /* Center the logo horizontally */
+  top: 0; /* Align the logo directly below the navbar */
 }
 
 /* Logo styles */
 .logo {
-  height: 84px; /* Increase the height by 20% (70px -> 84px) */
+  height: 70px; /* Adjust the logo size if necessary */
   width: auto; /* Maintain the aspect ratio */
   cursor: pointer; /* Change the cursor to a pointer on hover */
 }
@@ -1861,7 +1879,7 @@ footer {
   justify-content: space-between; /* Space between center links and right button */
   align-items: center;
   flex: 1; /* Allow the navbar to take up the remaining space */
-  margin-left: 170px; /* Adjust to align with the larger logo */
+  margin-left: 150px; /* Align with the adjusted logo */
 }
 
 /* Centered navigation links */
@@ -1908,6 +1926,16 @@ footer {
 
 /* Main content styles */
 .container {
-  margin-top: 120px; /* Add space below the header to prevent overlap with the larger logo */
+  margin-top: 60px; /* Further reduce the space below the navbar */
   padding: 20px;
+}
+
+.fade-in {
+  opacity: 1;
+  transition: opacity 0.3s ease-in;
+}
+
+.fade-out {
+  opacity: 0;
+  transition: opacity 0.3s ease-out;
 }

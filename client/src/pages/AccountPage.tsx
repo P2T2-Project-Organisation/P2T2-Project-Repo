@@ -1,66 +1,100 @@
-import { useEffect, useState } from 'react';
+import { useState, useEffect } from 'react';
+import auth from '../utils/auth';
 
 const AccountPage = () => {
-    const [user, setUser] = useState<{ username: string; createdAt: string } | null>(null);
+  const [userData, setUserData] = useState<{ username: string; email: string; createdAt: string } | null>(null);
+  const [loading, setLoading] = useState(true);
+  const [currentSection, setCurrentSection] = useState('Account Info'); // Track the active section
 
-    useEffect(() => {
-        const fetchUserData = async () => {
-            try {
-                const response = await fetch('/api/users/me', {
-                    headers: {
-                        Authorization: `Bearer ${localStorage.getItem('id_token')}`,
-                    },
-                });
+  useEffect(() => {
+    const fetchUserData = async () => {
+      try {
+        const response = await fetch('/api/users/me', {
+          headers: {
+            'Content-Type': 'application/json',
+            Authorization: `Bearer ${auth.getToken()}`,
+          },
+        });
 
-                if (!response.ok) {
-                    throw new Error('Failed to fetch user data');
-                }
+        if (!response.ok) {
+          throw new Error('Failed to fetch user data');
+        }
 
-                const data = await response.json();
-                setUser(data);
-            } catch (error) {
-                console.error('Error fetching user data:', error);
-            }
-        };
+        const data = await response.json();
+        setUserData(data); // Ensure the response data is correctly set
+      } catch (error) {
+        console.error('Error fetching user data:', error);
+        setUserData(null); // Set userData to null on error
+      } finally {
+        setLoading(false); // Ensure loading is set to false
+      }
+    };
 
-        fetchUserData();
-    }, []);
+    fetchUserData();
+  }, []);
 
-    return (
-        <div className="container mt-4">
-            <h2 className="text-center">Profile - My Account</h2>
-            <div className="row">
-                <div className="col-md-3">
-                    <div className="list-group">
-                        <a href="AccountPage" className="list-group-item list-group-item-action active">
-                            My Account
-                        </a>
-                        <a href="Wishlist" className="list-group-item list-group-item-action">
-                            Wishlist
-                        </a>
-                        <a href="Purchases" className="list-group-item list-group-item-action">
-                            Purchases
-                        </a>
-                    </div>
-                </div>
-                <div className="col-md-9 bg-light p-4">
-                    <h4>My Account</h4>
-                    <div className="d-flex align-items-center">
-                        <div className="rounded-circle bg-secondary text-white d-flex align-items-center justify-content-center">
-                            PROFILE
-                        </div>
-                        <div className="ms-3">
-                            <h5>{user ? user.username : 'Loading...'}</h5>
-                            <p>
-                                Account Created:{' '}
-                                {user ? new Date(user.createdAt).toLocaleDateString() : 'Loading...'}
-                            </p>
-                        </div>
-                    </div>
-                </div>
-            </div>
+  const renderContent = () => {
+    if (loading) {
+      return <div>Loading...</div>;
+    }
+
+    if (!userData) {
+      return <div>Error loading user data.</div>;
+    }
+
+    switch (currentSection) {
+      case 'Account Info':
+        return (
+          <div className="account-details">
+            <p><strong>Username:</strong> {userData.username}</p>
+            <p><strong>Email:</strong> {userData.email}</p>
+            <p><strong>Account Created:</strong> {new Date(userData.createdAt).toLocaleDateString()}</p>
+          </div>
+        );
+      case 'Purchases':
+        return <div>Purchases content will go here.</div>;
+      case 'Wishlist':
+        return <div>Wishlist content will go here.</div>;
+      default:
+        return null;
+    }
+  };
+
+  return (
+    <div className="container mt-4">
+      <div className="row">
+        {/* Sidebar */}
+        <div className="col-md-3">
+          <div className="list-group">
+            <button
+              className={`list-group-item ${currentSection === 'Account Info' ? 'active' : ''}`}
+              onClick={() => setCurrentSection('Account Info')}
+            >
+              Account Info
+            </button>
+            <button
+              className={`list-group-item ${currentSection === 'Purchases' ? 'active' : ''}`}
+              onClick={() => setCurrentSection('Purchases')}
+            >
+              Purchases
+            </button>
+            <button
+              className={`list-group-item ${currentSection === 'Wishlist' ? 'active' : ''}`}
+              onClick={() => setCurrentSection('Wishlist')}
+            >
+              Wishlist
+            </button>
+          </div>
         </div>
-    );
+
+        {/* Main Content */}
+        <div className="col-md-9">
+          <h2 className="text-center mb-4">{currentSection}</h2> {/* Dynamic header */}
+          {renderContent()}
+        </div>
+      </div>
+    </div>
+  );
 };
 
 export default AccountPage;

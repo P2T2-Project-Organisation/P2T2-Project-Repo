@@ -10,7 +10,7 @@ router.get('/me', authenticateToken, async (req, res) => {
         }
         const user = await User.findOne({
             where: { username },
-            attributes: ['username', 'createdAt'], // Include only the required fields
+            attributes: ['username', 'email', 'createdAt'], // Include email and createdAt fields
         });
         if (!user) {
             return res.status(404).json({ message: 'User not found' });
