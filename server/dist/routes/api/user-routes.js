@@ -4,20 +4,20 @@ import { authenticateToken } from '../../middleware/auth.js'; // Adjust the path
 const router = express.Router();
 router.get('/me', authenticateToken, async (req, res) => {
     try {
-        const username = req.user;
+        const { username } = req.user;
         if (!username) {
             return res.status(400).json({ message: 'Invalid user data' });
         }
         const user = await User.findOne({
             where: { username },
-            attributes: { exclude: ['password'] },
+            attributes: ['username', 'createdAt'], // Include only the required fields
         });
         if (!user) {
             return res.status(404).json({ message: 'User not found' });
         }
-        return res.json(user);
+        return res.json(user); // Return the user data
     }
-    catch (error: { message: string }) {
+    catch (error) {
         return res.status(500).json({ message: error.message });
     }
 });
