@@ -47,7 +47,7 @@ const ArtInterface: React.FC<ArtInterfaceProps> = ({
                 >
                   {artwork.price}
                 </p>
-                <button className="btn btn-primary">Buy</button>
+                <button className="btn btn-primary">Bid</button>
               </div>
             </div>
           </div>
