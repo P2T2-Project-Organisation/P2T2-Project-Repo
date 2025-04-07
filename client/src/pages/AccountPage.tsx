@@ -39,7 +39,7 @@ const AccountPage = () => {
     }
 
     if (!userData) {
-      return <div>Error loading user data.</div>;
+      return <div>Log in or Register to view your data.</div>; // Updated message
     }
 
     switch (currentSection) {

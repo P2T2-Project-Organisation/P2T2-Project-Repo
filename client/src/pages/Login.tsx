@@ -11,6 +11,7 @@ const Login = () => {
     username: '',
     password: '',
   });
+  const [error, setError] = useState<{ username?: string; password?: string; form?: string }>({});
 
   const handleChange = (
     e: ChangeEvent<HTMLInputElement | HTMLSelectElement>
@@ -20,10 +21,18 @@ const Login = () => {
       ...loginData,
       [name]: value,
     });
+    setError({ ...error, [name]: '' }); // Clear error for the field being edited
   };
 
   const handleSubmit = async (e: FormEvent) => {
     e.preventDefault();
+
+    // Check if username or password is empty
+    if (!loginData.username || !loginData.password) {
+      setError({ username: '', password: '', form: 'Enter username and password to continue' });
+      return;
+    }
+
     try {
       const data = await login(loginData);
       Auth.login(data.token); // Store the token in localStorage
@@ -33,8 +42,14 @@ const Login = () => {
 
       console.log('User logged in successfully');
       navigate('/'); // Redirect to the home page after successful login
-    } catch (err) {
-      console.error('Failed to login', err);
+    } catch (err: any) {
+      if (err.message === 'Authentication failed: User not found') {
+        setError({ username: 'Username does not exist' }); // Ensure this error is set
+      } else if (err.message === 'Authentication failed: Invalid password') {
+        setError({ password: 'Password is incorrect' }); // Ensure this error is set
+      } else {
+        console.error('Failed to login', err);
+      }
     }
   };
 
@@ -51,6 +66,7 @@ const Login = () => {
             value={loginData.username || ''}
             onChange={handleChange}
           />
+          {error.username && <p style={{ color: 'red' }}>{error.username}</p>}
         </div>
         <div className='form-group'>
           <label>Password</label>
@@ -61,7 +77,9 @@ const Login = () => {
             value={loginData.password || ''}
             onChange={handleChange}
           />
+          {error.password && <p style={{ color: 'red' }}>{error.password}</p>}
         </div>
+        {error.form && <p style={{ color: 'red', textAlign: 'center' }}>{error.form}</p>}
         <div className='form-group'>
           <button className='btn btn-primary' type='submit'>
             Login

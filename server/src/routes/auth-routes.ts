@@ -58,9 +58,16 @@ export const register = async (req: Request, res: Response) => {
   try {
     console.log('Register request received:', { username, email }); // Log the incoming request
 
+    // Check if the username is already in use
+    const existingUsername = await User.findOne({ where: { username } });
+    if (existingUsername) {
+      console.error('Username already in use:', username);
+      return res.status(400).json({ message: 'Username already in use' });
+    }
+
     // Check if the email is already in use
-    const existingUser = await User.findOne({ where: { email } });
-    if (existingUser) {
+    const existingEmail = await User.findOne({ where: { email } });
+    if (existingEmail) {
       console.error('Email already in use:', email);
       return res.status(400).json({ message: 'Email already in use' });
     }

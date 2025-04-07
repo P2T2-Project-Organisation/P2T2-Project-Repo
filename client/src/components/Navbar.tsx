@@ -63,7 +63,12 @@ const Navbar = () => {
     <header className="header">
       <div className="logo-container">
         <Link to="/">
-          <img src={logo} alt="Logo" className="logo" />
+          <img 
+            src={logo} 
+            alt="Logo" 
+            className="logo" 
+            style={{ height: '100px', width: 'auto' }} // Increase the height to make the logo larger
+          />
         </Link>
       </div>
       <nav className="navbar">
