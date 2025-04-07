@@ -34,6 +34,7 @@ const Login = () => {
     }
 
     try {
+      console.log('Submitting login form with:', loginData); // Log form data
       const data = await login(loginData);
       Auth.login(data.token); // Store the token in localStorage
 
@@ -43,12 +44,13 @@ const Login = () => {
       console.log('User logged in successfully');
       navigate('/'); // Redirect to the home page after successful login
     } catch (err: any) {
+      console.error('Failed to login:', err.message); // Log error message
       if (err.message === 'Authentication failed: User not found') {
         setError({ username: 'Username does not exist' }); // Ensure this error is set
       } else if (err.message === 'Authentication failed: Invalid password') {
         setError({ password: 'Password is incorrect' }); // Ensure this error is set
       } else {
-        console.error('Failed to login', err);
+        console.error('Unexpected error during login:', err);
       }
     }
   };

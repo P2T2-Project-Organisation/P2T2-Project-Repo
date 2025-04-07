@@ -116,7 +116,7 @@ const Navbar = () => {
                   borderRadius: '5px',
                   cursor: 'pointer',
                 }}
-                onClick={handleAuthAction}
+                onClick={handleAuthAction} // Ensure this function is correctly called
               >
                 Log In
               </button>

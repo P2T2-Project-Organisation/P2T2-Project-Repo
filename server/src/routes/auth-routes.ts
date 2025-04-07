@@ -21,11 +21,8 @@ export const login = async (req: Request, res: Response) => {
       return res.status(401).json({ message: 'Authentication failed: User not found' });
     }
 
-    console.log('User found:', { username: user.username, hashedPassword: user.password }); // Log user details
-
     // Compare the provided password with the stored hashed password
     const passwordIsValid = await bcrypt.compare(password, user.password);
-    console.log('Password comparison result:', passwordIsValid); // Log the result of password comparison
 
     // If password is invalid, send an authentication failed response
     if (!passwordIsValid) {
@@ -42,11 +39,10 @@ export const login = async (req: Request, res: Response) => {
 
     // Generate a JWT token for the authenticated user
     const token = jwt.sign({ username }, secretKey, { expiresIn: '1h' });
-    console.log('Token generated successfully for user:', username);
 
     return res.json({ token, user: { id: user.id, username: user.username, email: user.email } });  // Send the token and user info as a JSON response
   } catch (error: any) {
-    console.error('Error during login:', error.message, error.stack); // Log the error with stack trace
+    console.error('Error during login:', error.message); // Log the error
     return res.status(500).json({ message: 'Internal server error' });
   }
 };

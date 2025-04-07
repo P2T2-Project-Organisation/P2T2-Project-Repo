@@ -46,17 +46,16 @@ const ArtInterface: React.FC<ArtInterfaceProps> = ({
                 </p>
                 <p
                   className="card-price"
-                  style={{ fontWeight: "bold", fontSize: "1.2rem" }}
+                  style={{ fontWeight: 'bold', fontSize: '1.2rem' }}
                 >
                   {artwork.price}
                 </p>
                 <button
                   className="btn btn-primary"
-                  onClick={() => navigate(`/ProductViewer/${artwork.id}`)} // Navigate to ProductViewer
+                  onClick={() => navigate(`/ProductViewer/${artwork.id}`)} // Ensure navigation works correctly
                 >
                   Buy
                 </button>
-                <button className="btn btn-primary">Bid</button>
               </div>
             </div>
           </div>
@@ -69,7 +68,7 @@ const ArtInterface: React.FC<ArtInterfaceProps> = ({
               <li
                 key={i}
                 className={`page-item ${
-                  currentArtworkPage === i + 1 ? "active" : ""
+                  currentArtworkPage === i + 1 ? 'active' : ''
                 }`}
               >
                 <button
