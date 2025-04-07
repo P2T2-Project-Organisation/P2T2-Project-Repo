@@ -37,6 +37,10 @@ const router = createBrowserRouter([
         element: <ProductViewer />
       }, 
       {
+        path: '/ProductViewer/:id', // Add dynamic route for ProductViewer
+        element: <ProductViewer />,
+      },
+      {
         path: '/Purchases',
         element: <Purchases />
       }, 

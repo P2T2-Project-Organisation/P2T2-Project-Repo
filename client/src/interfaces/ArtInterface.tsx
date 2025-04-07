@@ -1,3 +1,5 @@
+import { useNavigate } from 'react-router-dom';
+
 interface Artwork {
   id: number;
   title: string;
@@ -20,6 +22,7 @@ const ArtInterface: React.FC<ArtInterfaceProps> = ({
   setCurrentArtworkPage,
   artworksPerPage,
 }) => {
+  const navigate = useNavigate();
   const totalPages = Math.ceil(artworks.length / artworksPerPage);
   const startIndex = (currentArtworkPage - 1) * artworksPerPage;
   const endIndex = startIndex + artworksPerPage;
@@ -47,7 +50,12 @@ const ArtInterface: React.FC<ArtInterfaceProps> = ({
                 >
                   {artwork.price}
                 </p>
-                <button className="btn btn-primary">Buy</button>
+                <button
+                  className="btn btn-primary"
+                  onClick={() => navigate(`/ProductViewer/${artwork.id}`)} // Navigate to ProductViewer
+                >
+                  Buy
+                </button>
               </div>
             </div>
           </div>
