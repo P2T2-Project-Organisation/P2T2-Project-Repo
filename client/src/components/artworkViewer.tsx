@@ -20,7 +20,7 @@ interface ArtworkViewerProps {
 const ArtworkViewer: React.FC<ArtworkViewerProps> = ({ artworkId }) => {
   const [artwork, setArtwork] = useState<Artwork | null>(null);
   const [loading, setLoading] = useState<boolean>(true);
-//   const [viewer, setViewer] = useState<any>(null);
+  const [viewer, setViewer] = useState<any>(null);
 
   // Create a ref to store the container element
   const containerRef = useRef<HTMLDivElement | null>(null);

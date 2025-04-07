@@ -56,6 +56,7 @@ const ArtInterface: React.FC<ArtInterfaceProps> = ({
                 >
                   Buy
                 </button>
+                <button className="btn btn-primary">Bid</button>
               </div>
             </div>
           </div>
