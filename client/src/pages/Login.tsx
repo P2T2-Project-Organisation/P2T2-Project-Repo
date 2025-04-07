@@ -1,10 +1,12 @@
 import { useState, type FormEvent, type ChangeEvent } from 'react';
+import { useNavigate } from 'react-router-dom';
 
 import Auth from '../utils/auth';
 import { login } from '../api/authAPI';
 import type { UserLogin } from '../interfaces/UserLogin';
 
 const Login = () => {
+  const navigate = useNavigate();
   const [loginData, setLoginData] = useState<UserLogin>({
     username: '',
     password: '',
@@ -25,6 +27,12 @@ const Login = () => {
     try {
       const data = await login(loginData);
       Auth.login(data.token); // Store the token in localStorage
+
+      // Trigger a storage event to update the Navbar's loggedIn state
+      window.dispatchEvent(new Event('storage'));
+
+      console.log('User logged in successfully');
+      navigate('/'); // Redirect to the home page after successful login
     } catch (err) {
       console.error('Failed to login', err);
     }

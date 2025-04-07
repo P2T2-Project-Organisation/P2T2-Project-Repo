@@ -12,7 +12,7 @@ import Purchases from './pages/Purchases';
 import Wishlist from './pages/Wishlist';
 import ErrorPage from './pages/ErrorPage';
 import Login from './pages/Login.tsx';
-
+import Register from './pages/Register'; // Import Register page
 
 const router = createBrowserRouter([
   {
@@ -48,6 +48,10 @@ const router = createBrowserRouter([
         path: '/Login',
         element: <Login />
       }, 
+      {
+        path: '/Register',
+        element: <Register />, // Add Register route
+      },
     ]
   }
 ])

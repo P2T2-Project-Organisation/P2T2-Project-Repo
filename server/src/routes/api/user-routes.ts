@@ -15,7 +15,7 @@ router.get('/me', authenticateToken, async (req: Request, res: Response) => {
 
     const user = await User.findOne({
       where: { username },
-      attributes: ['username', 'createdAt'], // Include only the required fields
+      attributes: ['username', 'email', 'createdAt'], // Include email and createdAt fields
     });
 
     if (!user) {
@@ -102,5 +102,6 @@ router.delete('/:id', async (req: Request, res: Response) => {
     res.status(500).json({ message: error.message });
   }
 });
+
 
 export { router as userRouter };

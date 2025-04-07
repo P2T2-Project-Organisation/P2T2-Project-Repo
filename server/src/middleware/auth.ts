@@ -32,3 +32,7 @@ export const authenticateToken = (req: Request, res: Response, next: NextFunctio
 
   return; // Ensures TypeScript knows all paths return
 };
+
+// Ensure this middleware is not applied to the /register route in your server setup
+// Example in your server entry file:
+// app.use('/api/register', register); // No middleware here
