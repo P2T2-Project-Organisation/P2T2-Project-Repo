@@ -19,6 +19,13 @@ interface ArtworkDetails {
   price: string;
 }
 
+const renderPrice = (price: string | undefined): string => {
+  if (!price) return '$1';
+  const numericPrice = parseInt(price.replace(/\D/g, ''), 10);
+  if (numericPrice < 1 || numericPrice > 1000000) return '$1,000,000';
+  return price;
+};
+
 const ProductViewer = () => {
   const { id } = useParams<{ id: string }>();
   const [artwork, setArtwork] = useState<ArtworkDetails | null>(null);
@@ -99,13 +106,10 @@ const ProductViewer = () => {
             <strong>Category:</strong> {artwork.department_title}
           </p>
           <p
-            style={{
-              fontSize: '1.5rem',
-              fontWeight: 'bold',
-              color: 'green',
-            }}
+            className="product-price"
+            style={{ fontWeight: 'bold', fontSize: '1.5rem' }}
           >
-            {artwork.price}
+            {renderPrice(artwork.price)}
           </p>
           <Elements stripe={stripePromise}>
             <div style={{ padding: '20px', border: '1px solid #ccc', borderRadius: '10px', maxWidth: '500px', margin: '20px auto' }}>

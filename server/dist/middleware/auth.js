@@ -1,24 +1,29 @@
 import jwt from 'jsonwebtoken';
-// Middleware function to authenticate JWT token
 export const authenticateToken = (req, res, next) => {
     const authHeader = req.headers.authorization;
     if (!authHeader) {
-        return res.sendStatus(401); // Unauthorized
+        console.error('Authorization header missing');
+        return res.status(401).json({ message: 'Authorization header missing' }); // Unauthorized
     }
     const token = authHeader.split(' ')[1];
     const secretKey = process.env.JWT_SECRET_KEY || '';
+    if (!secretKey) {
+        console.error('JWT_SECRET_KEY is not defined in environment variables');
+        return res.status(500).json({ message: 'Internal server error: Missing JWT secret key' });
+    }
     jwt.verify(token, secretKey, (err, user) => {
         if (err) {
-            return res.sendStatus(403); // Forbidden
+            console.error('JWT verification failed:', err.message);
+            return res.status(403).json({ message: 'Invalid or expired token' }); // Forbidden
         }
         if (!user) {
-            return res.sendStatus(403); // Ensure all paths return a response
+            console.error('JWT verification returned no user');
+            return res.status(403).json({ message: 'Invalid token payload' }); // Forbidden
         }
         req.user = user;
-        return next(); // Proceed if everything is fine
+        console.log('JWT verified successfully:', user);
+        next(); // Proceed if everything is fine
+        return; // Explicitly return after calling next()
     });
-    return; // Ensures TypeScript knows all paths return
+    return; // Ensure a return statement exists at the end of the function
 };
-// Ensure this middleware is not applied to the /register route in your server setup
-// Example in your server entry file:
-// app.use('/api/register', register); // No middleware here

@@ -49,6 +49,7 @@ const Home = () => {
   const [fadeClass, setFadeClass] = useState("fade-in");
   const [currentArtworkPage, setCurrentArtworkPage] = useState(1);
   const [showSuggestions, setShowSuggestions] = useState(true);
+  const [recentlyViewed, setRecentlyViewed] = useState<Artwork[]>([]);
 
   const artworksPerPage = 9;
 
@@ -57,8 +58,8 @@ const Home = () => {
   }, []);
 
   const generateRandomPrice = (): string => {
-    const min = 100;
-    const max = 7000000;
+    const min = 1; // Minimum price in dollars
+    const max = 1000000; // Maximum price in dollars
     const randomPrice = Math.floor(Math.random() * (max - min + 1)) + min;
     return `$${randomPrice.toLocaleString()}`;
   };
@@ -166,6 +167,14 @@ const Home = () => {
     }, 300);
   };
 
+  const handleArtworkClick = (artwork: Artwork) => {
+    setRecentlyViewed((prev) => {
+      const alreadyViewed = prev.find((item) => item.id === artwork.id);
+      if (alreadyViewed) return prev; // Avoid duplicates
+      return [artwork, ...prev].slice(0, 10); // Limit to 10 items
+    });
+  };
+
   const renderSuggestions = () => {
     if (!showSuggestions || !searchQuery) return null;
 
@@ -254,16 +263,36 @@ const Home = () => {
                 currentArtworkPage={currentArtworkPage}
                 setCurrentArtworkPage={setCurrentArtworkPage}
                 artworksPerPage={artworksPerPage}
+                onArtworkClick={handleArtworkClick} // Pass the function here
               />
             )}
           </>
         );
       case "Recently Viewed":
-        return <div>Recently Viewed content will go here.</div>;
+        return (
+          <div>
+            <h2>Recently Viewed Artworks</h2>
+            {recentlyViewed.length === 0 ? (
+              <p>No artworks viewed yet.</p>
+            ) : (
+              <div className="artwork-grid">
+                {recentlyViewed.map((artwork) => (
+                  <div key={artwork.id} className="artwork-item">
+                    <img
+                      src={`https://www.artic.edu/iiif/2/${artwork.image_id}/full/200,/0/default.jpg`}
+                      alt={artwork.title}
+                      style={{ width: "100px", height: "auto" }}
+                    />
+                    <p>{artwork.title}</p>
+                    <p>{artwork.artist_title}</p>
+                  </div>
+                ))}
+              </div>
+            )}
+          </div>
+        );
       case "Trending":
         return <div>Trending content will go here.</div>;
-      case "History":
-        return <div>History content will go here.</div>;
       default:
         return <div>Select a page from the sidebar.</div>;
     }
@@ -297,14 +326,6 @@ const Home = () => {
               onClick={() => setCurrentPage("Trending")}
             >
               Trending
-            </button>
-            <button
-              className={`list-group-item ${
-                currentPage === "History" ? "active" : ""
-              }`}
-              onClick={() => setCurrentPage("History")}
-            >
-              History
             </button>
           </div>
         </div>

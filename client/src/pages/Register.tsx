@@ -14,15 +14,21 @@ const Register = () => {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+
     try {
+      console.log('Submitting registration form with:', formData); // Log form data
+
       const response = await fetch('/auth/register', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(formData),
       });
 
+      console.log('Registration response status:', response.status); // Log response status
+
       if (!response.ok) {
         const errorData = await response.json().catch(() => ({}));
+        console.error('Registration error response:', errorData); // Log error response
         if (errorData.message === 'Username already in use') {
           setError({ username: 'Username is taken' });
         } else if (errorData.message === 'Email already in use') {

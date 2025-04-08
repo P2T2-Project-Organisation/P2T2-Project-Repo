@@ -72,7 +72,7 @@ export const register = async (req: Request, res: Response) => {
     const hashedPassword = await bcrypt.hash(password, 10);
     console.log('Hashed password:', hashedPassword);
 
-    // Create a new user in the connected friends_db database
+    // Create a new user in the database
     const newUser = await User.create({
       username,
       email,
@@ -83,7 +83,7 @@ export const register = async (req: Request, res: Response) => {
     return res.status(201).json({ message: 'User registered successfully', user: { id: newUser.id, username: newUser.username, email: newUser.email } });
   } catch (error: any) {
     console.error('Error during registration:', error.message, error.stack); // Log the error with stack trace
-    return res.status(500).json({ message: 'Internal server error' });
+    return res.status(500).json({ message: error.message || 'Internal server error' }); // Return detailed error message
   }
 };
 

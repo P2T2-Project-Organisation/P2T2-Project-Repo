@@ -1,3 +1,4 @@
+-- SQLBook: Code
 -- Active: 1742859656043@@127.0.0.1@5432@postgres
 -- DROP DATABASE
 DROP DATABASE IF EXISTS friends_db;

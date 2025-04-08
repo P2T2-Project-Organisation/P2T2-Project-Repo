@@ -14,6 +14,7 @@ interface ArtInterfaceProps {
   currentArtworkPage: number;
   setCurrentArtworkPage: (page: number) => void;
   artworksPerPage: number;
+  onArtworkClick: (artwork: Artwork) => void; // Add this prop
 }
 
 const ArtInterface: React.FC<ArtInterfaceProps> = ({
@@ -21,6 +22,7 @@ const ArtInterface: React.FC<ArtInterfaceProps> = ({
   currentArtworkPage,
   setCurrentArtworkPage,
   artworksPerPage,
+  onArtworkClick,
 }) => {
   const navigate = useNavigate();
   const totalPages = Math.ceil(artworks.length / artworksPerPage);
@@ -48,11 +50,17 @@ const ArtInterface: React.FC<ArtInterfaceProps> = ({
                   className="card-price"
                   style={{ fontWeight: 'bold', fontSize: '1.2rem' }}
                 >
-                  {artwork.price}
+                  {artwork.price && parseInt(artwork.price.replace(/\D/g, ''), 10) >= 1 && parseInt(artwork.price.replace(/\D/g, ''), 10) <= 1000000
+                    ? artwork.price
+                    : '$1,000,000'}
                 </p>
                 <button
                   className="btn btn-primary"
-                  onClick={() => navigate(`/ProductViewer/${artwork.id}`)} // Ensure navigation works correctly
+                  onClick={(e) => {
+                    e.stopPropagation(); // Prevent triggering the card click
+                    onArtworkClick(artwork); // Save to Recently Viewed
+                    navigate(`/ProductViewer/${artwork.id}`);
+                  }}
                 >
                   Buy
                 </button>

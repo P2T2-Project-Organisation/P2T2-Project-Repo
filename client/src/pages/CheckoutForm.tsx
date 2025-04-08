@@ -1,5 +1,6 @@
 import { useStripe, useElements, CardElement } from '@stripe/react-stripe-js';
 import { useState } from 'react';
+import auth from '../utils/auth'; // Import the auth utility
 
 interface CheckoutFormProps {
   amount: number;
@@ -19,13 +20,30 @@ const CheckoutForm: React.FC<CheckoutFormProps> = ({ amount }) => {
     setLoading(true);
 
     try {
+      console.log('Sending payment intent request with amount:', amount); // Log the request
+
+      // Convert the amount to cents before sending it to the backend
+      const amountInCents = Math.round(amount * 100);
+
       const response = await fetch('/api/payments/create-payment-intent', {
         method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ amount }),
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${auth.getToken()}`, // Include the token if required
+        },
+        body: JSON.stringify({ amount: amountInCents }), // Send the amount in cents
       });
 
+      console.log('Payment intent response status:', response.status); // Log response status
+
+      if (!response.ok) {
+        const errorData = await response.json().catch(() => ({}));
+        console.error('Payment intent error response:', errorData); // Log error response
+        throw new Error(errorData.error || 'Failed to create payment intent');
+      }
+
       const { clientSecret } = await response.json();
+      console.log('Received client secret:', clientSecret); // Log client secret
 
       const result = await stripe.confirmCardPayment(clientSecret, {
         payment_method: {
@@ -34,11 +52,14 @@ const CheckoutForm: React.FC<CheckoutFormProps> = ({ amount }) => {
       });
 
       if (result.error) {
+        console.error('Payment error:', result.error.message);
         setMessage(result.error.message || 'Payment failed');
       } else if (result.paymentIntent?.status === 'succeeded') {
+        console.log('Payment successful!');
         setMessage('Payment successful!');
       }
     } catch (error) {
+      console.error('Error during payment:', error);
       setMessage('An error occurred. Please try again.');
     } finally {
       setLoading(false);
