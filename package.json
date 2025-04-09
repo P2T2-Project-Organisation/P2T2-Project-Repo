@@ -28,6 +28,7 @@
   "dependencies": {
     "express": "^5.1.0",
     "openseadragon": "^5.0.1",
-    "run": "^1.5.0"
+    "run": "^1.5.0",
+    "dotenv": "^16.4.5"
   }
 }
