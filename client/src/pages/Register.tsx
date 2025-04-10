@@ -16,15 +16,42 @@ const Register = () => {
     e.preventDefault();
 
     try {
-      console.log('Submitting registration form with:', formData); // Log form data
+      console.log('Submitting registration form with:', formData);
 
-      const response = await fetch('/auth/register', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(formData),
-      });
+      // Try multiple URLs in case one fails
+      const urls = [
+        '/auth/register',                    // Relative URL (preferred)
+        'http://localhost:3001/auth/register' // Direct URL (fallback)
+      ];
 
-      console.log('Registration response status:', response.status); // Log response status
+      let response = null;
+      let lastError = null;
+
+      // Try each URL until one works
+      for (const url of urls) {
+        try {
+          console.log(`Attempting to connect to: ${url}`);
+          response = await fetch(url, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(formData),
+          });
+          
+          // If the request didn't throw an error, break out of the loop
+          break;
+        } catch (err) {
+          console.warn(`Connection failed to ${url}:`, err);
+          lastError = err;
+          // Continue to try the next URL
+        }
+      }
+
+      // If all URLs failed, throw the last error
+      if (!response) {
+        throw lastError || new Error('Failed to connect to the server');
+      }
+
+      console.log('Registration response status:', response.status);
 
       if (!response.ok) {
         const errorData = await response.json().catch(() => ({}));

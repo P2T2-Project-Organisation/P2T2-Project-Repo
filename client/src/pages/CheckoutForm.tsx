@@ -1,6 +1,7 @@
 import { useStripe, useElements, CardElement } from '@stripe/react-stripe-js';
-import { useState } from 'react';
-import auth from '../utils/auth'; // Import the auth utility
+import { useState, useEffect } from 'react';
+import auth from '../utils/auth';
+import { useNavigate } from 'react-router-dom';
 
 interface CheckoutFormProps {
   amount: number;
@@ -9,6 +10,7 @@ interface CheckoutFormProps {
 const CheckoutForm: React.FC<CheckoutFormProps> = ({ amount }) => {
   const stripe = useStripe();
   const elements = useElements();
+  const navigate = useNavigate();
   const [loading, setLoading] = useState(false);
   const [message, setMessage] = useState('');
 
@@ -23,7 +25,7 @@ const CheckoutForm: React.FC<CheckoutFormProps> = ({ amount }) => {
       console.log('Sending payment intent request with amount:', amount); // Log the request
 
       // Convert the amount to cents before sending it to the backend
-      const amountInCents = Math.round(amount * 100);
+      const amountInCents = Math.round(amount * 100); // Convert amount to cents
 
       const response = await fetch('/api/payments/create-payment-intent', {
         method: 'POST',
@@ -57,6 +59,15 @@ const CheckoutForm: React.FC<CheckoutFormProps> = ({ amount }) => {
       } else if (result.paymentIntent?.status === 'succeeded') {
         console.log('Payment successful!');
         setMessage('Payment successful!');
+        
+        // Clear the cart
+        localStorage.removeItem('shoppingCart');
+        window.dispatchEvent(new Event('cartUpdated'));
+        
+        // Just redirect after a short delay without showing an alert
+        setTimeout(() => {
+          navigate('/');
+        }, 1500);
       }
     } catch (error) {
       console.error('Error during payment:', error);
@@ -67,25 +78,54 @@ const CheckoutForm: React.FC<CheckoutFormProps> = ({ amount }) => {
   };
 
   return (
-    <form onSubmit={handleSubmit}>
-      <CardElement />
+    <form onSubmit={handleSubmit} style={{ width: '100%' }}>
+      <div className="mb-3">
+        <label className="form-label">Card Details</label>
+        <div className="p-3 border rounded" style={{ 
+          backgroundColor: '#f8f9fa',
+          width: '100%', // Make the form take full width of its container
+        }}>
+          <CardElement 
+            options={{
+              style: {
+                base: {
+                  fontSize: '16px',
+                  color: '#424770',
+                  '::placeholder': {
+                    color: '#aab7c4',
+                  },
+                  // Make the form field wider
+                  padding: '12px',
+                },
+                invalid: {
+                  color: '#9e2146',
+                },
+              },
+            }}
+          />
+        </div>
+      </div>
       <button
         type="submit"
         disabled={!stripe || loading}
+        className="btn btn-primary w-100"
         style={{
-          backgroundColor: 'blue',
+          backgroundColor: loading ? '#aab7c4' : 'blue',
           color: 'white',
           fontSize: '16px',
           padding: '10px 20px',
           border: 'none',
           borderRadius: '5px',
-          cursor: 'pointer',
-          marginTop: '20px',
+          cursor: loading ? 'not-allowed' : 'pointer',
         }}
       >
-        {loading ? 'Processing...' : 'Pay'}
+        {loading ? 'Processing...' : `Pay $${(amount).toFixed(2)}`}
       </button>
-      {message && <p>{message}</p>}
+      {message && (
+        <div className={`mt-3 text-center ${message.includes('successful') ? 'text-success' : 'text-danger'}`}>
+          {message}
+        </div>
+      )}
     </form>
   );
 };

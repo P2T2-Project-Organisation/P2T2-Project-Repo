@@ -3,7 +3,7 @@ export const authenticateToken = (req, res, next) => {
     const authHeader = req.headers.authorization;
     if (!authHeader) {
         console.error('Authorization header missing');
-        return res.status(401).json({ message: 'Authorization header missing' }); // Unauthorized
+        return res.status(401).json({ message: 'Authorization header missing' });
     }
     const token = authHeader.split(' ')[1];
     const secretKey = process.env.JWT_SECRET_KEY || '';
@@ -11,19 +11,21 @@ export const authenticateToken = (req, res, next) => {
         console.error('JWT_SECRET_KEY is not defined in environment variables');
         return res.status(500).json({ message: 'Internal server error: Missing JWT secret key' });
     }
-    jwt.verify(token, secretKey, (err, user) => {
+    jwt.verify(token, secretKey, (err, decoded) => {
         if (err) {
             console.error('JWT verification failed:', err.message);
-            return res.status(403).json({ message: 'Invalid or expired token' }); // Forbidden
+            res.status(403).json({ message: 'Invalid or expired token' });
+            return;
         }
-        if (!user) {
-            console.error('JWT verification returned no user');
-            return res.status(403).json({ message: 'Invalid token payload' }); // Forbidden
+        const user = decoded;
+        if (!user || !user.id || !user.username) {
+            console.error('JWT verification returned invalid user payload');
+            res.status(403).json({ message: 'Invalid token payload' });
+            return;
         }
-        req.user = user;
+        req.user = user; // Attach the user to the request object
         console.log('JWT verified successfully:', user);
-        next(); // Proceed if everything is fine
-        return; // Explicitly return after calling next()
+        next();
     });
-    return; // Ensure a return statement exists at the end of the function
+    return;
 };

@@ -1,12 +1,21 @@
 import { useNavigate } from 'react-router-dom';
 
-interface Artwork {
+export interface Artwork {
   id: number;
   title: string;
   artist_title: string;
   date_display: string;
   image_id: string;
-  price?: string;
+  price?: string | number;
+  username?: string;
+  imagePath?: string;
+  category?: string;
+  year?: string; // Add year property for filtering
+  createdAt?: string; // Add createdAt field to track when auction items were created
+  updatedAt?: string; // Add updatedAt field
+  User?: {
+    username: string;
+  };
 }
 
 interface ArtInterfaceProps {
@@ -14,7 +23,8 @@ interface ArtInterfaceProps {
   currentArtworkPage: number;
   setCurrentArtworkPage: (page: number) => void;
   artworksPerPage: number;
-  onArtworkClick: (artwork: Artwork) => void; // Add this prop
+  onArtworkClick: (artwork: Artwork) => void; // Function to handle artwork click
+  children?: (artwork: Artwork) => JSX.Element; // Add children prop for custom rendering
 }
 
 const ArtInterface: React.FC<ArtInterfaceProps> = ({
@@ -23,6 +33,7 @@ const ArtInterface: React.FC<ArtInterfaceProps> = ({
   setCurrentArtworkPage,
   artworksPerPage,
   onArtworkClick,
+  children, // Add children prop for custom rendering
 }) => {
   const navigate = useNavigate();
   const totalPages = Math.ceil(artworks.length / artworksPerPage);
@@ -33,37 +44,12 @@ const ArtInterface: React.FC<ArtInterfaceProps> = ({
   return (
     <div>
       <div className="row">
-        {currentArtworks.map((artwork, index) => (
-          <div className="col-md-4 mb-4" key={index}>
+        {currentArtworks.map((artwork) => (
+          <div className="col-md-4 mb-4" key={artwork.id}>
             <div className="card">
-              <img
-                src={`https://www.artic.edu/iiif/2/${artwork.image_id}/full/843,/0/default.jpg`}
-                className="card-img-top"
-                alt={artwork.title}
-              />
+              {/* Remove default image rendering here - let parent component handle it */}
               <div className="card-body">
-                <h5 className="card-title">{artwork.title}</h5>
-                <p className="card-text">
-                  {artwork.artist_title} ({artwork.date_display})
-                </p>
-                <p
-                  className="card-price"
-                  style={{ fontWeight: 'bold', fontSize: '1.2rem' }}
-                >
-                  {artwork.price && parseInt(artwork.price.replace(/\D/g, ''), 10) >= 1 && parseInt(artwork.price.replace(/\D/g, ''), 10) <= 1000000
-                    ? artwork.price
-                    : '$1,000,000'}
-                </p>
-                <button
-                  className="btn btn-primary"
-                  onClick={(e) => {
-                    e.stopPropagation(); // Prevent triggering the card click
-                    onArtworkClick(artwork); // Save to Recently Viewed
-                    navigate(`/ProductViewer/${artwork.id}`);
-                  }}
-                >
-                  Buy
-                </button>
+                {children && children(artwork)} {/* Render custom children */}
               </div>
             </div>
           </div>

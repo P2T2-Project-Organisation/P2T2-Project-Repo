@@ -1,11 +1,11 @@
-import React from "react";
+import React, { useState } from "react";
 
 interface CategoryButtonsProps {
   categories: string[];
   currentBatchIndex: number;
   calculateBatches: () => string[][];
   handleBatchChange: (direction: "next" | "prev") => void;
-  setCurrentCategory: (category: string) => void;
+  setCurrentCategory: (category: string | null) => void;
   fetchArtworksByCategory: (category: string) => void;
   fadeClass: string;
 }
@@ -19,73 +19,72 @@ const CategoryButtons: React.FC<CategoryButtonsProps> = ({
   fetchArtworksByCategory,
   fadeClass,
 }) => {
+  const [isDropdownOpen, setIsDropdownOpen] = useState(false);
+
   const batches = calculateBatches();
-  const totalBatches = batches.length;
-  const currentBatch = batches[currentBatchIndex] || [];
+  const currentBatch = batches[currentBatchIndex];
+
+  const handleCategoryClick = (category: string) => {
+    setCurrentCategory(category);
+    fetchArtworksByCategory(category);
+  };
 
   return (
-    <div>
-      {/* Batch Indicator */}
-      <div className="text-center mt-2">
-        <small>
-          {currentBatchIndex + 1} of {totalBatches}
-        </small>
-      </div>
-
-      <div
-        className={`d-flex align-items-center mt-3 ${fadeClass}`}
-        style={{
-          justifyContent: "center",
-          width: "100%",
-          maxWidth: "800px",
-          margin: "0 auto",
-          overflow: "hidden",
-        }}
-      >
-        {currentBatchIndex > 0 && (
-          <button
-            className="btn btn-secondary mx-1"
-            onClick={() => handleBatchChange("prev")}
-          >
-            &lt;
-          </button>
-        )}
-        <div
-          className="d-flex justify-content-center"
-          style={{
-            flexGrow: 1,
-            whiteSpace: "nowrap",
-          }}
-        >
-          {currentBatch.map((category) => (
+    <div className="category-buttons-container">
+      {/* Desktop view */}
+      <div className="desktop-category-buttons">
+        <div className={`category-buttons ${fadeClass}`}>
+          {currentBatch.map((category, index) => (
             <button
-              key={category}
-              className="btn btn-outline-primary mx-1"
-              style={{
-                padding: "8px 12px",
-                height: "45px",
-                textAlign: "center",
-                fontSize: "13px",
-                fontWeight: "bold",
-                borderRadius: "8px",
-                whiteSpace: "nowrap",
-              }}
-              onClick={() => {
-                setCurrentCategory(category);
-                fetchArtworksByCategory(category);
-              }}
+              key={index}
+              className="btn btn-outline-primary category-button"
+              onClick={() => handleCategoryClick(category)}
             >
               {category}
             </button>
           ))}
         </div>
-        {currentBatchIndex < totalBatches - 1 && (
+        <div className="batch-navigation mt-2">
+          <button
+            className="btn btn-secondary mx-1"
+            onClick={() => handleBatchChange("prev")}
+            disabled={currentBatchIndex === 0}
+          >
+            ◀ Prev
+          </button>
           <button
             className="btn btn-secondary mx-1"
             onClick={() => handleBatchChange("next")}
+            disabled={currentBatchIndex === batches.length - 1}
           >
-            &gt;
+            Next ▶
           </button>
+        </div>
+      </div>
+
+      {/* Mobile view */}
+      <div className="mobile-category-dropdown">
+        <button
+          className="btn btn-primary dropdown-toggle"
+          onClick={() => setIsDropdownOpen(!isDropdownOpen)}
+        >
+          Select Category
+        </button>
+        {isDropdownOpen && (
+          <div className="dropdown-menu show">
+            {categories.map((category, index) => (
+              <button
+                key={index}
+                className="dropdown-item"
+                onClick={() => {
+                  handleCategoryClick(category);
+                  setIsDropdownOpen(false);
+                }}
+              >
+                {category}
+              </button>
+            ))}
+          </div>
         )}
       </div>
     </div>

@@ -1,10 +1,16 @@
 import { useEffect, useState } from 'react';
-import { useParams } from 'react-router-dom';
+import { useParams, useLocation } from 'react-router-dom';
 import { loadStripe } from '@stripe/stripe-js';
 import { Elements } from '@stripe/react-stripe-js';
 import CheckoutForm from './CheckoutForm';
 
-const stripePromise = loadStripe('your-publishable-key-here'); // Replace with your Stripe publishable key
+const publishableKey = import.meta.env.VITE_STRIPE_PUBLISHABLE_KEY;
+
+if (!publishableKey) {
+  console.error('Stripe publishable key is missing. Check your environment variables.');
+}
+
+const stripePromise = loadStripe(publishableKey || ''); // Fallback to an empty string if the key is missing
 
 interface ArtworkDetails {
   id: number;
@@ -26,10 +32,22 @@ const renderPrice = (price: string | undefined): string => {
   return price;
 };
 
+const generateRandomPrice = (): string => {
+  const min = 1000; // Minimum price in dollars
+  const max = 999999; // Maximum price in dollars
+  const randomPrice = Math.floor(Math.random() * (max - min + 1)) + min;
+  return `$${randomPrice.toLocaleString()}`;
+};
+
 const ProductViewer = () => {
   const { id } = useParams<{ id: string }>();
+  const location = useLocation();
   const [artwork, setArtwork] = useState<ArtworkDetails | null>(null);
   const [loading, setLoading] = useState(true);
+
+  // Extract price from query parameters
+  const queryParams = new URLSearchParams(location.search);
+  const passedPrice = queryParams.get('price');
 
   useEffect(() => {
     const fetchArtworkDetails = async () => {
@@ -37,9 +55,6 @@ const ProductViewer = () => {
         const response = await fetch(`https://api.artic.edu/api/v1/artworks/${id}`);
         const data = await response.json();
         const artworkData = data.data;
-
-        // Add a random price for the artwork and format it with commas
-        const randomPrice = `$${(Math.random() * 7000000 + 100).toLocaleString()}`;
 
         setArtwork({
           id: artworkData.id,
@@ -51,7 +66,7 @@ const ProductViewer = () => {
           dimensions: artworkData.dimensions || 'Unknown Dimensions',
           department_title: artworkData.department_title || 'Unknown Category',
           image_id: artworkData.image_id,
-          price: randomPrice,
+          price: passedPrice || generateRandomPrice(), // Use passed price or generate a random price
         });
       } catch (error) {
         console.error('Error fetching artwork details:', error);
@@ -61,7 +76,7 @@ const ProductViewer = () => {
     };
 
     fetchArtworkDetails();
-  }, [id]);
+  }, [id, passedPrice]);
 
   if (loading) {
     return <div>Loading...</div>;
@@ -109,11 +124,11 @@ const ProductViewer = () => {
             className="product-price"
             style={{ fontWeight: 'bold', fontSize: '1.5rem' }}
           >
-            {renderPrice(artwork.price)}
+            {artwork.price}
           </p>
           <Elements stripe={stripePromise}>
             <div style={{ padding: '20px', border: '1px solid #ccc', borderRadius: '10px', maxWidth: '500px', margin: '20px auto' }}>
-              <CheckoutForm amount={parseInt(artwork.price.replace(/[$,]/g, '')) * 100} />
+              <CheckoutForm amount={parseInt(artwork.price.replace(/[$,]/g, ''), 10)} />
             </div>
           </Elements>
         </div>

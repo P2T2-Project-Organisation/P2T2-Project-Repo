@@ -13,6 +13,12 @@ import Wishlist from './pages/Wishlist';
 import ErrorPage from './pages/ErrorPage';
 import Login from './pages/Login.tsx';
 import Register from './pages/Register'; // Import Register page
+import Sell from './pages/Sell';
+import EditListing from './pages/EditListing';
+import Community from './pages/Community'; // Import Community page
+import Offers from './pages/Offers'; // Import Offers page
+import CartPage from './pages/CartPage'; // Import the new CartPage
+import AboutPage from './pages/AboutPage'; // Import AboutPage
 
 const router = createBrowserRouter([
   {
@@ -31,6 +37,10 @@ const router = createBrowserRouter([
       {
         path: '/AccountPage',
         element: <AccountPage />
+      }, 
+      {
+        path: '/AboutPage',
+        element: <AboutPage />
       }, 
       {
         path: '/ProductViewer',
@@ -55,6 +65,26 @@ const router = createBrowserRouter([
       {
         path: '/Register',
         element: <Register />, // Add Register route
+      },
+      {
+        path: '/Sell',
+        element: <Sell />,
+      },
+      {
+        path: '/EditListing',
+        element: <EditListing />,
+      },
+      {
+        path: '/Community',
+        element: <Community />, // Add Community route
+      },
+      {
+        path: '/Offers',
+        element: <Offers />, // Add Offers route
+      },
+      {
+        path: '/Cart',
+        element: <CartPage />, // Add the Cart route
       },
     ]
   }

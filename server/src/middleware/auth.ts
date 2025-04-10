@@ -1,8 +1,8 @@
 import { Request, Response, NextFunction } from 'express';
 import jwt from 'jsonwebtoken';
 
-// Define the interface for the JWT payload
 interface JwtPayload {
+  id: number;
   username: string;
 }
 
@@ -11,7 +11,7 @@ export const authenticateToken = (req: Request, res: Response, next: NextFunctio
 
   if (!authHeader) {
     console.error('Authorization header missing');
-    return res.status(401).json({ message: 'Authorization header missing' }); // Unauthorized
+    return res.status(401).json({ message: 'Authorization header missing' });
   }
 
   const token = authHeader.split(' ')[1];
@@ -22,22 +22,25 @@ export const authenticateToken = (req: Request, res: Response, next: NextFunctio
     return res.status(500).json({ message: 'Internal server error: Missing JWT secret key' });
   }
 
-  jwt.verify(token, secretKey, (err, user) => {
+  jwt.verify(token, secretKey, (err, decoded) => {
     if (err) {
       console.error('JWT verification failed:', err.message);
-      return res.status(403).json({ message: 'Invalid or expired token' }); // Forbidden
+      res.status(403).json({ message: 'Invalid or expired token' });
+      return;
     }
 
-    if (!user) {
-      console.error('JWT verification returned no user');
-      return res.status(403).json({ message: 'Invalid token payload' }); // Forbidden
+    const user = decoded as JwtPayload;
+
+    if (!user || !user.id || !user.username) {
+      console.error('JWT verification returned invalid user payload');
+      res.status(403).json({ message: 'Invalid token payload' });
+      return;
     }
 
-    req.user = user as JwtPayload;
+    req.user = user; // Attach the user to the request object
     console.log('JWT verified successfully:', user);
-    next(); // Proceed if everything is fine
-    return; // Explicitly return after calling next()
+    next();
   });
 
-  return; // Ensure a return statement exists at the end of the function
+  return;
 };

@@ -29,8 +29,8 @@ export const login = async (req, res) => {
             console.error('JWT_SECRET_KEY is not defined in environment variables');
             return res.status(500).json({ message: 'Internal server error: Missing JWT secret key' });
         }
-        // Generate a JWT token for the authenticated user
-        const token = jwt.sign({ username }, secretKey, { expiresIn: '1h' });
+        // Include `id` and `username` in the token payload
+        const token = jwt.sign({ id: user.id, username: user.username }, secretKey, { expiresIn: '1h' });
         return res.json({ token, user: { id: user.id, username: user.username, email: user.email } }); // Send the token and user info as a JSON response
     }
     catch (error) {
@@ -54,6 +54,11 @@ export const register = async (req, res) => {
         if (existingEmail) {
             console.error('Email already in use:', email);
             return res.status(400).json({ message: 'Email already in use' });
+        }
+        // Validate password
+        if (!password || password.length < 6) {
+            console.error('Password validation failed');
+            return res.status(400).json({ message: 'Password must be at least 6 characters long' });
         }
         // Hash the password before storing it
         const hashedPassword = await bcrypt.hash(password, 10);

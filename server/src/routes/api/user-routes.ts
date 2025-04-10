@@ -1,20 +1,19 @@
 import express from 'express';
 import type { Request, Response } from 'express';
 import { User } from '../../models/index.js';
-import { authenticateToken } from '../../middleware/auth.js'; // Adjust the path if necessary
+import { authenticateToken } from '../../middleware/auth.js';
 
 const router = express.Router();
 
 router.get('/me', authenticateToken, async (req: Request, res: Response) => {
   try {
-    const { username } = req.user as { username: string };
+    const { id } = req.user as { id: number };
 
-    if (!username) {
+    if (!id) {
       return res.status(400).json({ message: 'Invalid user data' });
     }
 
-    const user = await User.findOne({
-      where: { username },
+    const user = await User.findByPk(id, {
       attributes: ['username', 'email', 'createdAt'], // Include email and createdAt fields
     });
 
@@ -24,6 +23,7 @@ router.get('/me', authenticateToken, async (req: Request, res: Response) => {
 
     return res.json(user); // Return the user data
   } catch (error: any) {
+    console.error('Error fetching user data:', error.message);
     return res.status(500).json({ message: error.message });
   }
 });
@@ -34,9 +34,10 @@ router.get('/', async (_req: Request, res: Response) => {
     const users = await User.findAll({
       attributes: { exclude: ['password'] },
     });
-    res.json(users);
+    return res.json(users);
   } catch (error: any) {
-    res.status(500).json({ message: error.message });
+    console.error('Error fetching users:', error.message);
+    return res.status(500).json({ message: error.message });
   }
 });
 
@@ -48,12 +49,13 @@ router.get('/:id', async (req: Request, res: Response) => {
       attributes: { exclude: ['password'] },
     });
     if (user) {
-      res.json(user);
+      return res.json(user);
     } else {
-      res.status(404).json({ message: 'User not found' });
+      return res.status(404).json({ message: 'User not found' });
     }
   } catch (error: any) {
-    res.status(500).json({ message: error.message });
+    console.error('Error fetching user by ID:', error.message);
+    return res.status(500).json({ message: error.message });
   }
 });
 
@@ -62,9 +64,10 @@ router.post('/', async (req: Request, res: Response) => {
   const { username, email, password } = req.body;
   try {
     const newUser = await User.create({ username, email, password });
-    res.status(201).json(newUser);
+    return res.status(201).json(newUser);
   } catch (error: any) {
-    res.status(400).json({ message: error.message });
+    console.error('Error creating user:', error.message);
+    return res.status(400).json({ message: error.message });
   }
 });
 
@@ -78,12 +81,13 @@ router.put('/:id', async (req: Request, res: Response) => {
       user.username = username;
       user.password = password;
       await user.save();
-      res.json(user);
+      return res.json(user);
     } else {
-      res.status(404).json({ message: 'User not found' });
+      return res.status(404).json({ message: 'User not found' });
     }
   } catch (error: any) {
-    res.status(400).json({ message: error.message });
+    console.error('Error updating user:', error.message);
+    return res.status(400).json({ message: error.message });
   }
 });
 
@@ -94,14 +98,14 @@ router.delete('/:id', async (req: Request, res: Response) => {
     const user = await User.findByPk(id);
     if (user) {
       await user.destroy();
-      res.json({ message: 'User deleted' });
+      return res.json({ message: 'User deleted' });
     } else {
-      res.status(404).json({ message: 'User not found' });
+      return res.status(404).json({ message: 'User not found' });
     }
   } catch (error: any) {
-    res.status(500).json({ message: error.message });
+    console.error('Error deleting user:', error.message);
+    return res.status(500).json({ message: error.message });
   }
 });
-
 
 export { router as userRouter };
