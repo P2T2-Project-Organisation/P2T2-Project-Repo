@@ -1,29 +1,11 @@
-class AuthService {
-  
-  // Check if the user is logged in by retrieving the token from localStorage
-  loggedIn() {
-    const token = this.getToken();
-    return token;
-  }
+const auth = {
+  getToken: () => localStorage.getItem('token'),
+  loggedIn: () => !!localStorage.getItem('token'),
+  logout: () => localStorage.removeItem('token'),
+  login: (token: string) => {
+    localStorage.setItem('token', token);
+    window.dispatchEvent(new Event('storage')); // Trigger storage event to update state
+  },
+};
 
-  // Retrieve the JWT token from localStorage
-  getToken(): string {
-    const loggedUser = localStorage.getItem('id_token') || '';
-    return loggedUser;
-  }
-
-  // Store the JWT token in localStorage and redirect to the home page
-  login(idToken: string) {
-    localStorage.setItem('id_token', idToken);
-    window.location.assign('/');
-  }
-
-  // Remove the JWT token from localStorage and redirect to the home page
-  logout() {
-    localStorage.removeItem('id_token');
-    window.location.assign('/');
-  }
-}
-
-// Export an instance of the AuthService class
-export default new AuthService();
+export default auth;

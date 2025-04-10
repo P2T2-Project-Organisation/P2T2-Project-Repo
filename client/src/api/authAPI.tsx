@@ -1,31 +1,61 @@
-import { UserLogin } from "../interfaces/UserLogin";  // Import the UserLogin interface for typing userInfo
+import { UserLogin } from "../interfaces/UserLogin";
+import auth from "../utils/auth";
 
-// Function to send a POST request to the '/auth/login' endpoint with user login information
 const login = async (userInfo: UserLogin) => {
   try {
-    // Send a POST request to '/auth/login' with user login information in JSON format
-    const response = await fetch('/auth/login', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json'
-      },
-      body: JSON.stringify(userInfo)
-    });
+    console.log('Sending login request with:', userInfo);
 
-    // Throw error if response status is not OK (200-299)
-    if (!response.ok) {
-      const errorData = await response.json(); // Parse error response as JSON
-      throw new Error(`Error: ${errorData.message}`); // Throw a detailed error message    
+    // Try multiple URLs in case one fails
+    const urls = [
+      '/auth/login',                    // Relative URL (preferred)
+      'http://localhost:3001/auth/login' // Direct URL (fallback)
+    ];
+
+    let response = null;
+    let lastError = null;
+
+    // Try each URL until one works
+    for (const url of urls) {
+      try {
+        console.log(`Attempting to connect to: ${url}`);
+        response = await fetch(url, {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify(userInfo),
+        });
+        
+        // If the request didn't throw an error, break out of the loop
+        break;
+      } catch (err) {
+        console.warn(`Connection failed to ${url}:`, err);
+        lastError = err;
+        // Continue to try the next URL
+      }
     }
 
-    // Parse the response body as JSON
+    // If all URLs failed, throw the last error
+    if (!response) {
+      throw lastError || new Error('Failed to connect to the server');
+    }
+
+    console.log('Login response status:', response.status);
+
+    if (!response.ok) {
+      const errorData = await response.json().catch(() => ({}));
+      console.error('Login error response:', errorData);
+      throw new Error(errorData.message || 'Failed to log in');
+    }
+
     const data = await response.json();
-
-    return data;  // Return the data received from the server
+    console.log('Login successful, received data:', data);
+    auth.login(data.token);
+    return data;
   } catch (err) {
-    console.log('Error from user login: ', err);  // Log any errors that occur during fetch
-    return Promise.reject('Could not fetch user info');  // Return a rejected promise with an error message
+    console.error('Error from user login:', err);
+    return Promise.reject(err instanceof Error ? err : new Error('Failed to log in'));
   }
-}
+};
 
-export { login };  // Export the login function to be used elsewhere in the application
+export { login };
