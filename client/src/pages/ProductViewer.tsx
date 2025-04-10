@@ -25,12 +25,12 @@ interface ArtworkDetails {
   price: string;
 }
 
-const renderPrice = (price: string | undefined): string => {
-  if (!price) return '$1';
-  const numericPrice = parseInt(price.replace(/\D/g, ''), 10);
-  if (numericPrice < 1 || numericPrice > 1000000) return '$1,000,000';
-  return price;
-};
+// const renderPrice = (price: string | undefined): string => {
+//   if (!price) return '$1';
+//   const numericPrice = parseInt(price.replace(/\D/g, ''), 10);
+//   if (numericPrice < 1 || numericPrice > 1000000) return '$1,000,000';
+//   return price;
+// };
 
 const generateRandomPrice = (): string => {
   const min = 1000; // Minimum price in dollars

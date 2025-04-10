@@ -9,10 +9,10 @@ const Navbar = () => {
   const currentPage = useLocation().pathname;
   const [loggedIn, setLoggedIn] = useState(auth.loggedIn());
   const [username, setUsername] = useState<string | null>(null);
-  const [wishlist, setWishlist] = useState<Artwork[]>([]); // State for wishlist
-  const [cart, setCart] = useState<Artwork[]>([]); // New state for cart
-  const [offerCount, setOfferCount] = useState<number>(3); // Default to 3 for testing
-  const [unreadPosts, setUnreadPosts] = useState<number>(5); // Initialize with some unread posts
+  const [_wishlist, setWishlist] = useState<Artwork[]>([]); // State for wishlist
+  const [_cart, setCart] = useState<Artwork[]>([]); // New state for cart
+  const [_offerCount, setOfferCount] = useState<number>(3); // Default to 3 for testing
+  const [_unreadPosts, setUnreadPosts] = useState<number>(5); // Initialize with some unread posts
   const [isMenuOpen, setIsMenuOpen] = useState(false); // State to toggle the menu
 
   useEffect(() => {
@@ -215,13 +215,13 @@ const Navbar = () => {
     }
   };
 
-  const handleWishlistClick = () => {
-    navigate('/Wishlist', { state: { wishlist } }); // Pass wishlist to Wishlist page
-  };
+  // const handleWishlistClick = () => {
+  //   navigate('/Wishlist', { state: { wishlist } }); // Pass wishlist to Wishlist page
+  // };
 
-  const handleCartClick = () => {
-    navigate('/Cart'); // Navigate to the cart page
-  };
+  // const handleCartClick = () => {
+  //   navigate('/Cart'); // Navigate to the cart page
+  // };
 
   const handleCommunityClick = () => {
     setUnreadPosts(0); // Clear unread posts count

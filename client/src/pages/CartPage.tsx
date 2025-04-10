@@ -13,7 +13,7 @@ const stripePromise = loadStripe(publishableKey || '');
 const CartPage = () => {
   const navigate = useNavigate();
   const [cart, setCart] = useState<Artwork[]>([]);
-  const [loading, setLoading] = useState(false);
+  const [_loading, _setLoading] = useState(false);
   
   useEffect(() => {
     // Load cart from localStorage
@@ -69,18 +69,18 @@ const CartPage = () => {
   };
   
   // Handle checkout completion
-  const handleCheckoutComplete = () => {
-    // Clear the cart
-    localStorage.removeItem('shoppingCart');
-    setCart([]);
+  // const handleCheckoutComplete = () => {
+  //   // Clear the cart
+  //   localStorage.removeItem('shoppingCart');
+  //   setCart([]);
     
-    // Dispatch an event to notify other components
-    window.dispatchEvent(new Event('cartUpdated'));
+  //   // Dispatch an event to notify other components
+  //   window.dispatchEvent(new Event('cartUpdated'));
     
-    // Show success message or redirect
-    alert('Thank you for your purchase!');
-    navigate('/');
-  };
+  //   // Show success message or redirect
+  //   alert('Thank you for your purchase!');
+  //   navigate('/');
+  // };
 
   // Get the image source for an artwork
   const getImageSrc = (artwork: Artwork): string => {
