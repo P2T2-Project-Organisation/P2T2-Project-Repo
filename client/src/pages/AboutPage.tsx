@@ -48,7 +48,7 @@ const AboutPage = () => {
           </div>
           <div className="col-md-3 text-center">
             <img
-              src="https://via.placeholder.com/150"
+              src="./src/assets/sheikh.png"
               alt="Sheikh Iftekhar"
               className="rounded-circle mb-3 img-thumbnail"
             ></img>

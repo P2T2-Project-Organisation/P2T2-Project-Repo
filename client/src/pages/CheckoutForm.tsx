@@ -1,5 +1,5 @@
 import { useStripe, useElements, CardElement } from '@stripe/react-stripe-js';
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 import auth from '../utils/auth';
 import { useNavigate } from 'react-router-dom';
 

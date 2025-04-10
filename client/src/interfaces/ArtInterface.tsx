@@ -1,4 +1,4 @@
-import { useNavigate } from 'react-router-dom';
+// import { useNavigate } from 'react-router-dom';
 
 export interface Artwork {
   id: number;
@@ -32,10 +32,9 @@ const ArtInterface: React.FC<ArtInterfaceProps> = ({
   currentArtworkPage,
   setCurrentArtworkPage,
   artworksPerPage,
-  onArtworkClick,
   children, // Add children prop for custom rendering
 }) => {
-  const navigate = useNavigate();
+  // const navigate = useNavigate();
   const totalPages = Math.ceil(artworks.length / artworksPerPage);
   const startIndex = (currentArtworkPage - 1) * artworksPerPage;
   const endIndex = startIndex + artworksPerPage;

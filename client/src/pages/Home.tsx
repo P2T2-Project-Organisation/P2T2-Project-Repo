@@ -43,7 +43,7 @@ const Home = () => {
   const [currentArtworkPage, setCurrentArtworkPage] = useState(1);
   const [showSuggestions, setShowSuggestions] = useState(true);
   const [recentlyViewed, setRecentlyViewed] = useState<Artwork[]>([]);
-  const [wishlist, setWishlist] = useState<Artwork[]>([]); // State for wishlist
+  const [_wishlist, setWishlist] = useState<Artwork[]>([]); // State for wishlist
   const [auctionArtworks, setAuctionArtworks] = useState<Artwork[]>([]); // State for auction artworks
   const [currentAuctionPage, setCurrentAuctionPage] = useState(1); // Pagination for auction
   const [bidItemId, setBidItemId] = useState<number | null>(null);
@@ -51,8 +51,8 @@ const Home = () => {
   const [bidSent, setBidSent] = useState<boolean>(false);
   const [bidError, setBidError] = useState<string | null>(null);
   const [clickedButtonId, setClickedButtonId] = useState<number | null>(null);
-  const [cart, setCart] = useState<Artwork[]>([]); // New state for cart items
-  const [cartItems, setCartItems] = useState<number[]>([]); // New state to track items in cart by ID
+  const [_cart, setCart] = useState<Artwork[]>([]); // New state for cart items
+  const [_cartItems, setCartItems] = useState<number[]>([]); // New state to track items in cart by ID
   const [filterOption, setFilterOption] = useState<string>('');
   const [showFilterDropdown, setShowFilterDropdown] = useState<boolean>(false);
 
@@ -451,9 +451,9 @@ const Home = () => {
   };
   
   // Check if an item is in the cart
-  const isInCart = (id: number): boolean => {
-    return cartItems.includes(id);
-  };
+  // const isInCart = (id: number): boolean => {
+  //   return cartItems.includes(id);
+  // };
 
   // Load cart and cartItems from localStorage
   useEffect(() => {
@@ -690,10 +690,10 @@ const Home = () => {
     const currentArtworks = filteredAndSortedArtworks.slice(startIndex, endIndex);
 
     // Create a custom category handler for Auction page
-    const handleAuctionCategorySelect = (category: string) => {
-      setCurrentCategory(category);
-      // Don't call setCurrentAuctionPage here - it's handled by the useEffect above
-    };
+    // const handleAuctionCategorySelect = (category: string) => {
+    //   setCurrentCategory(category);
+    //   // Don't call setCurrentAuctionPage here - it's handled by the useEffect above
+    // };
 
     return (
       <>
