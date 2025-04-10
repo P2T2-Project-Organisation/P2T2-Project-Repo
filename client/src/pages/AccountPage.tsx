@@ -134,11 +134,6 @@ const AccountPage = () => {
                   console.log('Constructed image URL:', imageUrl); // Log the image URL for debugging
                   return (
                     <div key={item.id} className="listed-item">
-                      <img
-                        src={imageUrl} // Use the constructed image URL
-                        alt={item.title}
-                        className="listed-item-image"
-                      />
                       <div className="listed-item-info">
                         <h5>{item.title}</h5>
                         <p>{item.description}</p>
