@@ -4,6 +4,9 @@
 
 This is a dynamic art auction and marketplace application that allows users to explore, buy, sell, and interact with art in a seamless way. The app is built to provide a platform for users to auction their artworks, place bids, share posts, and more.
 
+<img width="1430" alt="Screen Shot 2025-04-11 at 1 09 20 PM" src="https://github.com/user-attachments/assets/4db34020-951f-499c-ae58-5d50eab8f7ee" />
+
+
 ![license](https://img.shields.io/badge/license-MIT-blue.svg)
 
 ## Table of Contents
