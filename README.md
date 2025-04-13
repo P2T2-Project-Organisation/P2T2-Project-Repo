@@ -1,11 +1,9 @@
-# MyOpus Artwork Marketplace
+# Candidate Search Application
 
-[Live Demo](https://p2t2-project-render-deploy.onrender.com/)
+[Live Demo](https://your-deployment-link-here.com)
 
-This is a dynamic art auction and marketplace application that allows users to explore, buy, sell, and interact with art in a seamless way. The app is built to provide a platform for users to auction their artworks, place bids, share posts, and more.
-
-<img width="1430" alt="Screen Shot 2025-04-11 at 1 09 20 PM" src="https://github.com/user-attachments/assets/4db34020-951f-499c-ae58-5d50eab8f7ee" />
-
+This is a dynamic candidate discovery and selection application that allows users to browse through developer profiles, shortlist potential candidates, and manage a persistent list of saved candidates. Built to streamline the search process, the app enables users to swipe through profiles and save ideal matches with a single click.
+<img width="1439" alt="Screen Shot 2025-04-13 at 4 06 48 PM" src="https://github.com/user-attachments/assets/a38b1d79-872d-4156-84c6-68d2d88274fa" />
 
 ![license](https://img.shields.io/badge/license-MIT-blue.svg)
 
@@ -17,24 +15,23 @@ This is a dynamic art auction and marketplace application that allows users to e
 
 ## Features
 
-- **Home Page**: A central hub featuring three main sections:
-  - **Explore**: Displays a curated collection of artworks imported from the Chicago Museum of Art API.
-  - **Auction**: Users can browse listings created by other users, place bids, and interact with auctions.
-  - **Recently Viewed**: A section where users can quickly access art they have recently explored.
+- **Candidate Search Page**:
+  - Displays detailed information for one candidate at a time, including:
+    - Name
+    - Username
+    - Location
+    - Avatar
+    - Email
+    - GitHub Profile URL
+    - Company
+  - **"+" Button**: Saves the current candidate to the shortlist and loads the next candidate.
+  - **"-" Button**: Skips the current candidate and loads the next one without saving.
+  - **End of List Handling**: Displays a message when there are no more candidates left to review.
 
-- **Auction Page**: Where users can list their art for auction, manage current bids, and sell their pieces to the highest bidder.
-
-- **Account Page**: Displays user account information and a collection of artworks the user has currently listed for auction.
-
-- **Community Page**: A space for users to share posts, interact with other users, and discuss art with the community.
-
-- **Sell Page**: Enables users to list new artworks for sale on the auction page.
-
-- **Offers Page**: Users can view offers that other users have sent for their listed artwork.
-
-- **Cart and Wishlist**: Allows users to add artwork to their cart for future purchase or save it for later viewing in the wishlist.
-
-- **Stripe Payment Checkout**: Integrated Stripe API for secure payment processing and smooth transaction experience.
+- **Potential Candidates Page**:
+  - Displays a list of all previously saved candidates with full profile details.
+  - Shows a message when there are no saved candidates.
+  - Saved candidates persist even after page reloads, ensuring continuity.
 
 ## Installation
 
@@ -51,12 +48,13 @@ This is a dynamic art auction and marketplace application that allows users to e
    `npm start`
 
 ## Technologies Used
-- **PostgreSQL** (Database)
-- **Express** (Backend)
-- **React** (Frontend)
+
+- **React** (Frontend Framework)
 - **Node.js** (Runtime Environment)
-- **Stripe API** (Payment Processing)
-- Chicago Museum of Art API (for art data)
+- **Express** (Backend - if used)
+- **LocalStorage** (Data Persistence)
+- **GitHub Users API** (Candidate Data)
 
 ## License
+
 This project is licensed under the MIT License.
